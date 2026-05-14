@@ -1,0 +1,15 @@
+.DS_Store
+.env
+node_modules/
+.next/
+dist/
+build/
+__pycache__/
+*.pyc
+*.db
+chroma_store/
+.cache/
+.pytest_cache/
+.venv/
+venv/
+*.env
