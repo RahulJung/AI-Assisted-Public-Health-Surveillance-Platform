@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 
 from app.models.entities import AnomalyResult, GeneratedReport
+from app.services.synthetic_data import display_region, display_region_text
 
 
 def generate_insight(anomaly: AnomalyResult | None) -> dict:
@@ -9,13 +10,13 @@ def generate_insight(anomaly: AnomalyResult | None) -> dict:
     metrics = anomaly.model_metrics or {}
     return {
         "what_changed": f"{anomaly.syndrome} ED activity exceeded expected baseline with an anomaly score of {anomaly.anomaly_score}.",
-        "where": f"{anomaly.region}, {anomaly.facility}",
+        "where": f"{display_region(anomaly.region)}, {anomaly.facility}",
         "when": anomaly.metric_date.isoformat(),
         "syndrome": anomaly.syndrome,
         "age_group": anomaly.age_group,
         "contributing_facilities": [anomaly.facility],
-        "contributing_regions": [anomaly.region],
-        "baseline_comparison": anomaly.explanation,
+        "contributing_regions": [display_region(anomaly.region)],
+        "baseline_comparison": display_region_text(anomaly.explanation),
         "positivity_lead": "Yes" if metrics.get("test_positivity_pct_change", 0) > 0.2 else "No clear lead signal",
         "hospitalization_lag": "Yes" if metrics.get("hospitalization_pct_change", 0) > 0.4 else "No clear lag signal",
         "likely_signal_type": anomaly.signal_type,
@@ -42,7 +43,7 @@ def generate_report(db: Session) -> dict:
 This independent research prototype detected an unusual synthetic surveillance signal for {getattr(anomaly, "syndrome", "selected syndrome")} activity. The signal should be reviewed as decision support only.
 
 ## Signal Description
-{getattr(anomaly, "explanation", "No anomaly has been generated yet.")}
+{display_region_text(getattr(anomaly, "explanation", "No anomaly has been generated yet."))}
 
 Likely signal type: {getattr(anomaly, "signal_type", "not available")}. Severity score: {getattr(anomaly, "severity_score", "not available")}.
 

@@ -6,7 +6,7 @@ from sklearn.preprocessing import StandardScaler
 from sqlalchemy.orm import Session
 
 from app.models.entities import AnomalyResult
-from app.services.synthetic_data import metrics_dataframe
+from app.services.synthetic_data import display_region, display_region_text, metrics_dataframe
 
 
 def severity_from_score(score: float) -> str:
@@ -198,7 +198,7 @@ def serialize_anomalies(rows: list[AnomalyResult]) -> list[dict]:
         {
             "id": row.id,
             "metric_date": row.metric_date.isoformat(),
-            "region": row.region,
+            "region": display_region(row.region),
             "facility": row.facility,
             "syndrome": row.syndrome,
             "age_group": row.age_group,
@@ -208,7 +208,7 @@ def serialize_anomalies(rows: list[AnomalyResult]) -> list[dict]:
             "models_flagged": row.models_flagged,
             "model_metrics": row.model_metrics or {},
             "signal_type": row.signal_type,
-            "explanation": row.explanation,
+            "explanation": display_region_text(row.explanation),
         }
         for row in rows
     ]

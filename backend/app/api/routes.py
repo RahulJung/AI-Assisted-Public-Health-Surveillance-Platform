@@ -8,7 +8,7 @@ from app.services.hl7 import parse_hl7_message
 from app.services.ml import forecast, run_detection, serialize_anomalies
 from app.services.rag import rag_service
 from app.services.reports import generate_insight, generate_report
-from app.services.synthetic_data import ensure_synthetic_data, metrics_dataframe
+from app.services.synthetic_data import display_region, ensure_synthetic_data, metrics_dataframe
 
 router = APIRouter(prefix="/api")
 
@@ -39,7 +39,7 @@ def records(limit: int = 100, db: Session = Depends(get_db)):
         {
             "id": row.id,
             "date": row.encounter_date.isoformat(),
-            "region": row.region,
+            "region": display_region(row.region),
             "facility": row.facility,
             "syndrome": row.syndrome,
             "age_group": row.age_group,

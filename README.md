@@ -62,10 +62,10 @@ The simulation includes:
 
 Injected scenarios are designed to look like analyst-facing surveillance problems:
 
-- Respiratory outbreak in `Region_3`: test positivity rises first, ED visits rise 2 to 3 days later, hospitalizations rise 5 to 7 days later, deaths rise 10 to 14 days later, with stronger effects in children and older adults.
-- Gastrointestinal gradual increase in `Region_1`: slow 14-day ramp concentrated in three facilities and mostly affecting children and young adults.
+- Respiratory outbreak in `Central Plains`: test positivity rises first, ED visits rise 2 to 3 days later, hospitalizations rise 5 to 7 days later, deaths rise 10 to 14 days later, with stronger effects in children and older adults.
+- Gastrointestinal gradual increase in `North Metro`: slow 14-day ramp concentrated in three facilities and mostly affecting children and young adults.
 - Facility-level reporting artifact at `Facility_12`: missing/delayed reporting for several days followed by a sudden catch-up batch upload.
-- Older-adult respiratory severity signal in `Region_4`: ED visits rise moderately while hospitalization ratio rises more sharply.
+- Older-adult respiratory severity signal in `East River`: ED visits rise moderately while hospitalization ratio rises more sharply.
 
 Data quality flags are stored on metrics, messages, and parsed encounters:
 

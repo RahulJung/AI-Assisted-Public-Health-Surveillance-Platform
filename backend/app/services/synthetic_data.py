@@ -10,7 +10,14 @@ from app.models.entities import Facility, ParsedEncounter, SurveillanceMetric, S
 from app.services.hl7 import build_hl7_message, parse_hl7_message
 
 
-REGIONS = ["Region_1", "Region_2", "Region_3", "Region_4", "Region_5"]
+REGIONS = ["North Metro", "South Valley", "Central Plains", "East River", "West Coastal"]
+LEGACY_REGION_NAMES = {
+    "Region_1": "North Metro",
+    "Region_2": "South Valley",
+    "Region_3": "Central Plains",
+    "Region_4": "East River",
+    "Region_5": "West Coastal",
+}
 SYNDROMES = [
     "Respiratory",
     "Influenza-like Illness",
@@ -56,6 +63,22 @@ SYNDROME_BASE_SHARE = {
     "Unknown/Other": 0.23,
 }
 AGE_SHARE = {"0-4": 0.09, "5-17": 0.16, "18-49": 0.39, "50-64": 0.18, "65+": 0.18}
+
+
+def display_region(region: str) -> str:
+    return LEGACY_REGION_NAMES.get(region, region)
+
+
+def display_region_text(text: str | None) -> str | None:
+    if text is None:
+        return None
+    for legacy, display in LEGACY_REGION_NAMES.items():
+        text = text.replace(legacy, display)
+    return text
+
+
+def region_index(region: str) -> int:
+    return REGIONS.index(display_region(region))
 
 
 @dataclass(frozen=True)
@@ -111,13 +134,13 @@ class SurveillanceSimulationEngine:
         flags: list[str] = []
         scenario = "baseline"
 
-        # Scenario 1: respiratory outbreak in Region_3 with positivity -> ED -> hospitalization -> death lag.
-        if profile.region == "Region_3" and syndrome in ["Respiratory", "Influenza-like Illness"]:
+        # Scenario 1: respiratory outbreak in Central Plains with positivity -> ED -> hospitalization -> death lag.
+        if profile.region == "Central Plains" and syndrome in ["Respiratory", "Influenza-like Illness"]:
             onset = 118
             curve = max(0.0, min(1.0, (day_index - onset) / 18))
             if day_index >= onset - 3:
                 positivity_shift += 0.16 * max(0.0, min(1.0, (day_index - (onset - 3)) / 14))
-                scenario = "respiratory_outbreak_region_3"
+                scenario = "respiratory_outbreak_central_plains"
             if day_index >= onset:
                 age_weight = 1.45 if age_group in ["0-4", "65+"] else 1.12 if age_group in ["5-17", "50-64"] else 0.9
                 visit_multiplier += 1.25 * curve * age_weight
@@ -126,15 +149,15 @@ class SurveillanceSimulationEngine:
             if day_index >= onset + 12:
                 death_multiplier += 0.75 * curve * (1.8 if age_group == "65+" else 0.8)
 
-        # Scenario 2: GI gradual increase in Region_1, concentrated in three facilities.
-        if profile.region == "Region_1" and profile.name in ["Facility_01", "Facility_06", "Facility_11"] and syndrome == "Gastrointestinal":
+        # Scenario 2: GI gradual increase in North Metro, concentrated in three facilities.
+        if profile.region == "North Metro" and profile.name in ["Facility_01", "Facility_06", "Facility_11"] and syndrome == "Gastrointestinal":
             onset = 132
             if onset <= day_index <= onset + 28:
                 ramp = min(1.0, (day_index - onset) / 14)
                 age_weight = 1.4 if age_group in ["0-4", "5-17", "18-49"] else 0.75
                 visit_multiplier += 0.95 * ramp * age_weight
                 positivity_shift += 0.04 * ramp
-                scenario = "gi_gradual_region_1"
+                scenario = "gi_gradual_north_metro"
 
         # Scenario 3: reporting artifact at one facility with downtime then catch-up upload.
         if profile.name == "Facility_12" and 145 <= day_index <= 150:
@@ -147,7 +170,7 @@ class SurveillanceSimulationEngine:
             scenario = "facility_batch_upload"
 
         # Scenario 4: older-adult respiratory anomaly with higher hospitalization ratio.
-        if profile.region == "Region_4" and syndrome == "Respiratory" and age_group == "65+" and day_index >= 154:
+        if profile.region == "East River" and syndrome == "Respiratory" and age_group == "65+" and day_index >= 154:
             ramp = min(1.0, (day_index - 154) / 12)
             visit_multiplier += 0.55 * ramp
             hospitalization_multiplier += 1.6 * ramp
@@ -171,7 +194,7 @@ class SurveillanceSimulationEngine:
         metric_date = self.start + timedelta(days=day_index)
         weekday = metric_date.weekday()
         weekday_factor = 1.12 if weekday in [0, 1] else 0.92 if weekday in [5, 6] else 1.0
-        region_factor = 0.9 + REGIONS.index(profile.region) * 0.06
+        region_factor = 0.9 + region_index(profile.region) * 0.06
         age_share = AGE_SHARE[age_group]
         base_mean = profile.baseline_volume * SYNDROME_BASE_SHARE[syndrome] * age_share
         base_mean *= weekday_factor * region_factor * self.seasonal_multiplier(syndrome, day_index)
@@ -365,7 +388,7 @@ def metrics_dataframe(db: Session) -> pd.DataFrame:
         [
             {
                 "date": row.metric_date,
-                "region": row.region,
+                "region": display_region(row.region),
                 "facility": row.facility,
                 "syndrome": row.syndrome,
                 "age_group": row.age_group,

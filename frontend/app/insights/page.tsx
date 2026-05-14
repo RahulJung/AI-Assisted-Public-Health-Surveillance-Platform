@@ -10,12 +10,12 @@ import { anomaliesFallback } from "@/lib/mock-data";
 
 const insightFallback = {
   what_changed: "Respiratory ED activity exceeded expected baseline with rising test positivity.",
-  where: "North, Facility 01",
+  where: "Central Plains, Facility 01",
   when: "2026-05-10",
   syndrome: "Respiratory",
   age_group: "0-4",
   contributing_facilities: ["Facility 01"],
-  contributing_regions: ["Region_3"],
+  contributing_regions: ["Central Plains"],
   baseline_comparison: "Activity registered above the rolling 21-day baseline and was flagged by multiple models.",
   positivity_lead: "Yes",
   hospitalization_lag: "Yes",

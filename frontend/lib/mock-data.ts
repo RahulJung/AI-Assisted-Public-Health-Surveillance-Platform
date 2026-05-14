@@ -1,4 +1,4 @@
-export const regions = ["Region_1", "Region_2", "Region_3", "Region_4", "Region_5"];
+export const regions = ["North Metro", "South Valley", "Central Plains", "East River", "West Coastal"];
 export const facilities = Array.from({ length: 20 }, (_, index) => `Facility_${String(index + 1).padStart(2, "0")}`);
 export const syndromes = ["Respiratory", "Influenza-like Illness", "Gastrointestinal", "Fever", "Neurological", "Heat-related Illness", "Injury", "Unknown/Other"];
 export const ageGroups = ["0-4", "5-17", "18-49", "50-64", "65+"];
@@ -41,7 +41,7 @@ export const anomaliesFallback = [
   {
     id: 1,
     metric_date: "2026-05-10",
-    region: "Region_3",
+    region: "Central Plains",
     facility: "Facility_03",
     syndrome: "Respiratory",
     age_group: "65+",
@@ -56,7 +56,7 @@ export const anomaliesFallback = [
   {
     id: 2,
     metric_date: "2026-05-08",
-    region: "Region_1",
+    region: "North Metro",
     facility: "Facility_06",
     syndrome: "Gastrointestinal",
     age_group: "18-49",
@@ -70,4 +70,4 @@ export const anomaliesFallback = [
   }
 ];
 
-export const hl7Fallback = `MSH|^~\\&|EHR|Facility_12|PHA|Region_3|202605141200||ADT^A01|MSG00001|P|2.5\rPID|1||P12345||RESEARCH^PATIENT||19800101|U\rPV1|1|E|ED^Facility_12^^Region_3||||||||||||||||V0010001\rOBX|1|TX|CC||FEVER COUGH SHORTNESS OF BREATH||||||F\rOBX|2|ST|TEST_RESULT||POS||||||F\rDG1|1||J11.1||Influenza-like Illness`;
+export const hl7Fallback = `MSH|^~\\&|EHR|Facility_12|PHA|Central Plains|202605141200||ADT^A01|MSG00001|P|2.5\rPID|1||P12345||RESEARCH^PATIENT||19800101|U\rPV1|1|E|ED^Facility_12^^Central Plains||||||||||||||||V0010001\rOBX|1|TX|CC||FEVER COUGH SHORTNESS OF BREATH||||||F\rOBX|2|ST|TEST_RESULT||POS||||||F\rDG1|1||J11.1||Influenza-like Illness`;
