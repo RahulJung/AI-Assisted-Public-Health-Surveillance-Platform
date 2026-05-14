@@ -1,73 +1,120 @@
-# AI/ML Public Health Surveillance Assistant
+# AI-Assisted Public Health Surveillance Platform
 
-Research-grade decision support for syndromic surveillance, anomaly detection, and public health knowledge retrieval. This repository is an independent prototype using synthetic HL7/EHR-style data only.
+Research prototype for syndromic surveillance, anomaly detection, short-horizon forecasting, HL7/EHR message processing, and retrieval-augmented public health interpretation. The system uses synthetic data only and is designed as a decision-support demonstration rather than an operational public health product.
 
-## Public Health Relevance
+## Abstract
 
-The application follows CDC-style surveillance framing:
+Public health surveillance teams often need to distinguish early disease signals from reporting artifacts, facility workflow changes, and noisy small-area variation. This project studies how a full-stack AI/ML system can support that workflow by combining simulated HL7-style encounter data, surveillance feature engineering, anomaly detection, short-term forecasting, retrieval-augmented guidance, and explainable investigation summaries.
 
-- Early indicators: emergency department visits and test positivity.
-- Severity indicators: hospitalizations and deaths.
-- Additional indicators: syndrome trends, regional changes, facility-level spikes, age-group changes, reporting delays, and data quality issues.
+The prototype generates 180 days of synthetic emergency department and severity indicators across multiple regions, facilities, syndrome groups, and age groups. It injects outbreak-like patterns, gradual increases, severity lag signals, and reporting-quality artifacts. A FastAPI backend computes model evidence using rolling baselines, EWMA acceleration, Isolation Forest, DBSCAN, and moving-average forecasts. A Next.js dashboard presents surveillance trends, ML signal detection, forecast intervals, knowledge retrieval, explainable insights, and investigation briefs for analyst review.
 
-The workflow is:
+## Research Motivation
+
+Traditional syndromic surveillance requires analysts to reason across several imperfect signals:
+
+- Early indicators such as emergency department visits and test positivity.
+- Severity indicators such as hospitalizations and deaths.
+- Operational context such as reporting delays, duplicate messages, missing fields, and batch uploads.
+- Stratification by region, facility, syndrome, and age group.
+
+The research question behind this prototype is:
+
+> Can an integrated AI/ML workflow make synthetic surveillance signals more interpretable by linking anomaly scores, indicator timing, data quality context, and evidence-backed analyst guidance?
+
+The answer demonstrated here is not a validated surveillance model. Instead, the project provides an implementation pattern for building auditable, explainable, and analyst-centered public health decision support.
+
+## Screenshots
+
+Upload screenshots to `docs/screenshots/` using the filenames below.
+
+### Landing Page
+
+![Landing page placeholder](docs/screenshots/landing-page.png)
+
+### Surveillance Dashboard
+
+![Surveillance dashboard placeholder](docs/screenshots/dashboard.png)
+
+### ML Signal Detection
+
+![ML signal detection placeholder](docs/screenshots/ml-detection.png)
+
+### Forecasting
+
+![Forecasting placeholder](docs/screenshots/forecasting.png)
+
+### Knowledge Retrieval
+
+![Knowledge retrieval placeholder](docs/screenshots/knowledge-retrieval.png)
+
+### Investigation Brief
+
+![Investigation brief placeholder](docs/screenshots/investigation-brief.png)
+
+## System Overview
 
 ```text
-Synthetic HL7/EHR data -> ingestion API -> HL7 parser -> PostgreSQL -> feature engineering -> ML anomaly detection -> RAG knowledge retrieval -> explainable insight generation -> investigation report
+Synthetic HL7/EHR-style records
+        -> ingestion and parsing
+        -> surveillance metrics database
+        -> feature engineering
+        -> anomaly detection and forecasting
+        -> RAG knowledge retrieval
+        -> explainable insight generation
+        -> investigation brief
 ```
 
-## Technical Architecture
+The application is organized around analyst-facing workflows:
 
-- Frontend: React, Next.js, TypeScript, TailwindCSS, shadcn-style UI primitives, Recharts.
-- Backend: Python FastAPI, SQLAlchemy, Alembic, PostgreSQL.
-- AI/ML: pandas, numpy, scikit-learn, Isolation Forest, DBSCAN, rolling baseline z-score, EWMA trend detection, moving-average forecasting.
-- RAG: local markdown knowledge base, chunking, ChromaDB vector storage, optional OpenAI embeddings, optional OpenAI response generation, semantic retrieval with snippets and source citations.
-- Deployment: Docker and docker-compose.
+- Surveillance Dashboard: descriptive monitoring of ED visits, positivity, hospitalizations, deaths, regions, facilities, syndromes, and age groups.
+- HL7/EHR Processing: sample ADT-style messages, parser output, missing-field checks, and data-quality flags.
+- ML Signal Detection: model-ranked anomaly review with filters for severity, signal type, region, facility, syndrome, age group, model evidence, and data quality.
+- Forecasting: 7-day and 14-day ED visit projections with uncertainty bands.
+- Knowledge Retrieval: RAG-based public health guidance with supporting snippets and cited source documents.
+- Explainable AI Insights: structured summaries of what changed, where it occurred, which indicators contributed, and what follow-up is recommended.
+- Investigation Brief: generated narrative report for synthetic signal review.
 
-## Application Pages
+## Technical Stack
 
-- Landing Page
-- Surveillance Dashboard
-- HL7/EHR Processing
-- ML Signal Detection
-- Forecasting
-- Public Health Knowledge Retrieval Panel
-- Explainable AI Insights
-- Investigation Brief
+| Layer | Technology |
+| --- | --- |
+| Frontend | Next.js, React, TypeScript, TailwindCSS, Recharts, lucide-react |
+| Backend API | Python, FastAPI, Pydantic, SQLAlchemy |
+| Database | SQLite for local development, PostgreSQL in Docker Compose |
+| Data migration | Alembic-ready schema structure |
+| Machine learning | pandas, NumPy, scikit-learn |
+| Models | Rolling z-score baselines, EWMA, Isolation Forest, DBSCAN, moving-average forecasting |
+| Retrieval | Local markdown knowledge base, ChromaDB vector store, optional OpenAI embeddings |
+| Generation | Optional OpenAI response generation or fine-tuned model for RAG answer style |
+| Deployment | Docker, Docker Compose |
 
-## Surveillance Simulation Engine
+## Synthetic Surveillance Data
 
-The backend does not create arbitrary fake rows. It uses a deterministic `SurveillanceSimulationEngine` in `backend/app/services/synthetic_data.py` to model how syndromic surveillance data behaves in practice. The engine generates 180 days of synthetic HL7/EHR-style surveillance data across:
+The backend uses a deterministic `SurveillanceSimulationEngine` in `backend/app/services/synthetic_data.py`. The generator is designed to behave like surveillance data rather than arbitrary fake rows.
 
-- 5 regions
-- 20 facilities
-- 8 syndrome categories
-- multiple age groups
-- ED visits, test positivity, hospitalizations, deaths
-- chief complaints and diagnosis codes
-- synthetic HL7 ADT-style raw messages
+Synthetic dataset characteristics:
 
-The simulation includes:
+- 180 surveillance days.
+- 5 public health regions: `North Metro`, `South Valley`, `Central Plains`, `East River`, and `West Coastal`.
+- 20 facilities with large, medium, and small volume profiles.
+- 8 syndrome categories.
+- 5 age groups.
+- ED visits, test positivity, hospitalizations, deaths, reporting delay, data quality score, and raw HL7-style messages.
 
-- facility-level ED volume patterns with large, medium, and small facilities
-- regional variation
-- syndrome-specific baselines
-- day-of-week effects
-- winter-like increases for respiratory and influenza-like illness
-- warmer-period increases for heat-related illness
-- smaller periodic gastrointestinal fluctuations
-- stable injury patterns
-- noisier trends in smaller facilities
-- reporting delays, missing data, duplicates, facility downtime, batch uploads, and inconsistent labels
+The default metric volume is approximately:
 
-Injected scenarios are designed to look like analyst-facing surveillance problems:
+```text
+180 days x 20 facilities x 8 syndromes x 5 age groups = 144,000 surveillance metric rows
+```
 
-- Respiratory outbreak in `Central Plains`: test positivity rises first, ED visits rise 2 to 3 days later, hospitalizations rise 5 to 7 days later, deaths rise 10 to 14 days later, with stronger effects in children and older adults.
-- Gastrointestinal gradual increase in `North Metro`: slow 14-day ramp concentrated in three facilities and mostly affecting children and young adults.
-- Facility-level reporting artifact at `Facility_12`: missing/delayed reporting for several days followed by a sudden catch-up batch upload.
-- Older-adult respiratory severity signal in `East River`: ED visits rise moderately while hospitalization ratio rises more sharply.
+Injected scenarios include:
 
-Data quality flags are stored on metrics, messages, and parsed encounters:
+- Respiratory outbreak in `Central Plains`, where test positivity rises first, ED visits follow, and hospitalizations/deaths lag.
+- Gradual gastrointestinal increase in `North Metro`, concentrated in three facilities and younger age groups.
+- Facility reporting artifact at `Facility_12`, where downtime is followed by a batch upload.
+- Older-adult respiratory severity signal in `East River`, where hospitalization ratios rise faster than ED volume.
+
+Data quality flags include:
 
 - `missing_chief_complaint`
 - `missing_diagnosis`
@@ -76,150 +123,154 @@ Data quality flags are stored on metrics, messages, and parsed encounters:
 - `facility_batch_upload`
 - `inconsistent_label`
 
-## AI/ML Methods
+## ML Methods
 
-The ML layer is central to the project and runs on engineered surveillance features:
+The ML layer intentionally combines simple, inspectable statistical baselines with unsupervised anomaly detection. The goal is interpretability for public health analysts, not black-box prediction.
 
-- Rolling baseline z-score: compares observed ED visits with shifted 7-day and 14-day baselines.
-- EWMA trend acceleration: detects gradual increases that may not appear as sudden spikes.
-- Isolation Forest: uses visit count, test positivity, hospitalizations, deaths, region, facility, syndrome, age group, day of week, rolling average, percent change, reporting delay, and data quality score.
-- DBSCAN: identifies abnormal regional/facility clusters and outlier points.
-- Forecasting: predicts next 7 and 14 days with moving-average forecasts and uncertainty bands.
+### Rolling Baseline Z-Score
 
-Every anomaly includes explainable model evidence:
+Observed ED visits are compared with shifted 7-day and 14-day rolling baselines. This catches abrupt increases relative to recent local history while avoiding direct leakage from the current day.
 
-- z-score values
-- Isolation Forest score
-- EWMA delta
-- DBSCAN cluster label
-- model agreement count
-- affected facilities and age groups
-- test positivity lead signal
-- hospitalization and death lag signals
-- likely signal type: true outbreak, reporting artifact, severity signal, or undetermined
-- severity level based on score, model agreement, affected strata, hospitalization increase, death increase, and data quality context
+### EWMA Trend Acceleration
 
-## RAG Pipeline
+Exponentially weighted moving averages identify gradual increases that may not appear as one-day spikes. This is useful for slow-moving gastrointestinal or respiratory signals.
 
-Markdown files live in `backend/knowledge_base` and cover:
+### Isolation Forest
 
-- syndromic surveillance
-- COVID surveillance indicators
-- HL7 ADT messages
-- ED visit trends
-- test positivity
-- hospitalization lag
-- death lag
-- chief complaint analysis
-- anomaly investigation
-- reporting delays
-- facility-level spikes
-- data quality problems
-- explainable AI in public health
-- public health analyst workflow
+Isolation Forest provides multivariate anomaly scoring over volume, positivity, severity indicators, reporting delay, quality score, rolling features, and categorical strata.
 
-The `/api/rag/query` endpoint supports analyst interpretation rather than generic chat. It returns:
+### DBSCAN
 
-- concise answer
-- retrieved supporting snippets
-- cited source documents
-- recommended investigation checklist
-- related indicators to review
+DBSCAN identifies outlier points and abnormal clusters in engineered surveillance feature space. It is used as supporting evidence, not as a standalone outbreak classifier.
 
-### OpenAI RAG Mode
+### Forecasting
 
-By default the app can run locally. To use OpenAI for RAG:
+The forecasting endpoint uses a 14-day moving-average method with widening uncertainty after day 7. Forecast output is intended to support near-term situational awareness, not operational prediction.
 
-```bash
-cd backend
-cp .env.example .env
-export OPENAI_API_KEY=...
-export RAG_PROVIDER=openai
-export OPENAI_EMBEDDING_MODEL=text-embedding-3-small
-export OPENAI_RAG_MODEL=gpt-4o-mini
-uvicorn app.main:app --reload
-```
+## Model Evidence and Interpretability
 
-Then rebuild the vector index:
+Each anomaly includes structured evidence:
 
-```bash
-curl -X POST http://localhost:8000/api/rag/reindex
-curl http://localhost:8000/api/rag/status
-```
+- 7-day and 14-day z-scores.
+- Isolation Forest score.
+- EWMA delta.
+- DBSCAN cluster label.
+- Model agreement count.
+- Affected facility count.
+- Affected age-group count.
+- ED visit percent change.
+- Test positivity change.
+- Hospitalization and death lag evidence.
+- Data quality flags.
+- Scenario context when known.
+- Likely signal type: `likely true outbreak`, `reporting artifact`, `severity signal`, or `undetermined signal`.
 
-In OpenAI mode:
+The frontend table is organized so analysts can filter by severity, signal type, geography, syndrome, age group, model evidence, and data quality before reading narrative explanations.
 
-- document chunks are embedded with `OPENAI_EMBEDDING_MODEL`
-- retrieved snippets are still stored in ChromaDB
-- answer synthesis uses `OPENAI_RAG_MODEL` or `OPENAI_FINE_TUNED_MODEL`
-- the UI remains a Public Health Knowledge Retrieval Panel, not a chatbot
+## Performance and Scalability Characteristics
 
-### Fine-Tuning
+This prototype is optimized for local research iteration and transparent behavior. On the default synthetic dataset, model execution is expected to be interactive on a modern laptop because the data volume is modest and the feature set is tabular.
 
-Fine-tuning is not the same as RAG indexing. The knowledge base is retrieved at query time; the fine-tuned model controls response style, structure, caution language, and analyst workflow.
+Performance characteristics:
 
-Starter files live in `backend/training`:
+- Data generation is deterministic and reproducible for repeated experiments.
+- Feature engineering uses pandas groupby and rolling-window operations.
+- Unsupervised models run over engineered aggregate rows rather than raw encounter messages.
+- Dashboard APIs return grouped summaries to keep frontend rendering responsive.
+- ChromaDB indexing is local and suitable for a small public health knowledge base.
 
-- `rag_finetune_examples.jsonl`
-- `README.md`
+Current limitations:
 
-Create a fine-tuning job:
+- No external validation against real surveillance data.
+- No calibrated outbreak probability.
+- No prospective evaluation of sensitivity, specificity, or timeliness.
+- Forecasting is intentionally simple and short-horizon.
+- RAG quality depends on the completeness and review quality of the local knowledge base.
 
-```bash
-cd backend
-export OPENAI_API_KEY=...
-export OPENAI_FINE_TUNE_BASE_MODEL=gpt-4o-mini
-python scripts/create_finetune_job.py
-```
+Recommended evaluation extensions:
 
-After the job succeeds, set:
+- Compare detection dates against known injected scenario onset dates.
+- Measure false positives caused by reporting artifacts.
+- Evaluate model agreement patterns by syndrome, facility size, and region.
+- Track precision/recall against synthetic scenario labels.
+- Add timing metrics for API latency, detection runtime, and indexing runtime.
 
-```bash
-OPENAI_FINE_TUNED_MODEL=ft:...
-```
+## RAG Knowledge Retrieval
 
-Then restart the backend. A serious fine-tune should use reviewed examples from epidemiologist-style workflows, not only the starter examples.
+The knowledge base lives in `backend/knowledge_base` and contains markdown guidance on:
+
+- Syndromic surveillance.
+- COVID-style indicator interpretation.
+- HL7 ADT messages.
+- ED visit trend review.
+- Test positivity.
+- Hospitalization and death lag.
+- Chief complaint analysis.
+- Anomaly investigation.
+- Reporting delays.
+- Facility-level spikes.
+- Data quality issues.
+- Explainable AI in public health.
+- Public health analyst workflow.
+
+The `/api/rag/query` endpoint returns:
+
+- Analyst-oriented answer.
+- Supporting snippets.
+- Source document citations.
+- Investigation checklist.
+- Related indicators to review.
+
+Optional OpenAI mode can use OpenAI embeddings and response generation while preserving the local document store and source snippets.
 
 ## HL7/EHR Processing
 
 Synthetic ADT_A01-style messages include:
 
-- MSH
-- PID
-- PV1
-- OBX
-- DG1
+- `MSH`
+- `PID`
+- `PV1`
+- `OBX`
+- `DG1`
 
-The parser returns structured fields, validation status, missing field checks, and data quality issues. Synthetic messages are sampled from the simulated encounters and can include missing chief complaints, missing diagnosis codes, delayed report dates, duplicate event message IDs, and inconsistent syndrome labels.
+The parser returns structured encounter fields, validation status, missing-field checks, and data-quality flags. This makes the system suitable for demonstrating how raw message quality can affect downstream surveillance signals.
 
-## Database Schema
+## Use Cases
 
-Tables:
+This prototype is useful for:
 
-- `facilities`
-- `synthetic_hl7_messages`
-- `parsed_encounters`
-- `surveillance_metrics`
-- `anomaly_results`
-- `rag_documents`
-- `generated_reports`
+- Demonstrating public health surveillance workflows.
+- Testing anomaly detection logic on reproducible synthetic signals.
+- Showing how data quality artifacts can mimic true outbreaks.
+- Teaching indicator triangulation across ED visits, positivity, hospitalizations, and deaths.
+- Building explainable AI examples for epidemiology and health informatics portfolios.
+- Prototyping RAG-based analyst support without using real patient data.
+
+It is not suitable for:
+
+- Clinical decision-making.
+- Operational outbreak confirmation.
+- Real patient surveillance without governance, privacy, validation, and security review.
+- Replacing epidemiologist judgment.
 
 ## API Endpoints
 
-- `POST /api/generate-synthetic-data`
-- `GET /api/records`
-- `GET /api/dashboard/summary`
-- `GET /api/dashboard/trends`
-- `GET /api/hl7/messages`
-- `POST /api/hl7/parse`
-- `POST /api/ml/run-detection`
-- `GET /api/ml/anomalies`
-- `GET /api/ml/forecast`
-- `POST /api/rag/query`
-- `POST /api/rag/reindex`
-- `GET /api/rag/status`
-- `POST /api/insights/generate`
-- `POST /api/reports/generate`
+| Endpoint | Purpose |
+| --- | --- |
+| `POST /api/generate-synthetic-data` | Generate or reuse synthetic surveillance data |
+| `GET /api/records` | Return parsed synthetic encounters |
+| `GET /api/dashboard/summary` | Latest dashboard summary indicators |
+| `GET /api/dashboard/trends` | Trend, regional, facility, syndrome, and age-group aggregates |
+| `GET /api/hl7/messages` | Raw synthetic HL7-style messages |
+| `POST /api/hl7/parse` | Parse a submitted HL7-style message |
+| `POST /api/ml/run-detection` | Run anomaly detection models |
+| `GET /api/ml/anomalies` | Return ranked anomaly results |
+| `GET /api/ml/forecast` | Return 7-day or 14-day syndrome forecast |
+| `POST /api/rag/query` | Query the public health knowledge base |
+| `POST /api/rag/reindex` | Rebuild the vector index |
+| `GET /api/rag/status` | Return RAG provider and model status |
+| `POST /api/insights/generate` | Generate explainable anomaly insight |
+| `POST /api/reports/generate` | Generate investigation brief |
 
 ## Local Setup
 
@@ -243,9 +294,13 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Open `http://localhost:3000`.
+Open:
 
-Generate initial data:
+```text
+http://localhost:3000
+```
+
+Generate initial data and run detection:
 
 ```bash
 curl -X POST "http://localhost:8000/api/generate-synthetic-data?force=true"
@@ -253,12 +308,6 @@ curl -X POST http://localhost:8000/api/ml/run-detection
 ```
 
 Use `force=true` when you want to rebuild the local synthetic dataset after changing the simulation design.
-
-## Why This Matters
-
-Public health analysts often need to distinguish a real early signal from data quality artifacts. This prototype demonstrates how AI/ML and RAG can support that workflow by combining synthetic HL7/EHR-style data, explainable anomaly detection, indicator lag logic, facility-level quality flags, and retrieval of relevant public health knowledge.
-
-The output is decision support for epidemiologist review, not automated outbreak confirmation.
 
 ## Docker Setup
 
@@ -268,31 +317,76 @@ docker compose up --build
 
 Services:
 
-- frontend: `http://localhost:3000`
-- backend: `http://localhost:8000`
+- Frontend: `http://localhost:3000`
+- Backend: `http://localhost:8000`
 - API docs: `http://localhost:8000/docs`
 - PostgreSQL: `localhost:5432`
 
-## Screenshots
+## Optional OpenAI RAG Mode
 
-Place screenshots in a future `docs/screenshots` directory:
+By default the app can run locally. To use OpenAI for RAG:
 
-- `landing-page.png`
-- `dashboard.png`
-- `ml-detection.png`
-- `knowledge-retrieval.png`
-- `investigation-brief.png`
+```bash
+cd backend
+cp .env.example .env
+export OPENAI_API_KEY=...
+export RAG_PROVIDER=openai
+export OPENAI_EMBEDDING_MODEL=text-embedding-3-small
+export OPENAI_RAG_MODEL=gpt-4o-mini
+uvicorn app.main:app --reload
+```
+
+Then rebuild the vector index:
+
+```bash
+curl -X POST http://localhost:8000/api/rag/reindex
+curl http://localhost:8000/api/rag/status
+```
+
+In OpenAI mode:
+
+- Document chunks are embedded with `OPENAI_EMBEDDING_MODEL`.
+- Retrieved snippets are stored in ChromaDB.
+- Answer synthesis uses `OPENAI_RAG_MODEL` or `OPENAI_FINE_TUNED_MODEL`.
+- The UI remains a public health knowledge retrieval panel, not a generic chatbot.
+
+## Fine-Tuning Context
+
+Fine-tuning is separate from RAG indexing. RAG retrieves factual guidance at query time; a fine-tuned model can shape response structure, caution language, and analyst workflow.
+
+Starter files live in `backend/training`:
+
+- `rag_finetune_examples.jsonl`
+- `README.md`
+
+Create a fine-tuning job:
+
+```bash
+cd backend
+export OPENAI_API_KEY=...
+export OPENAI_FINE_TUNE_BASE_MODEL=gpt-4o-mini
+python scripts/create_finetune_job.py
+```
+
+After the job succeeds, set:
+
+```bash
+OPENAI_FINE_TUNED_MODEL=ft:...
+```
+
+Then restart the backend.
 
 ## Research Disclaimer
 
-This is an independent research prototype. It uses only synthetic data. It does not use real patient data, does not connect to employer systems, does not reference confidential systems, and should not be used for operational clinical or public health decision-making.
+This is an independent research prototype. It uses only synthetic data. It does not use real patient data, does not connect to confidential systems, and should not be used for clinical or operational public health decision-making. Model outputs are illustrative and require expert review.
 
 ## Future Work
 
-- FHIR support
-- real-time pipeline
-- advanced NLP chief complaint classification
-- LSTM or Transformer forecasting
-- graph-based outbreak propagation
-- privacy-preserving analytics
-- cloud deployment on AWS
+- Add FHIR resources alongside HL7-style message examples.
+- Add real-time streaming ingestion patterns.
+- Add NLP classification for chief complaints.
+- Evaluate LSTM, temporal convolution, or transformer-based forecasting.
+- Add graph-based facility and region propagation analysis.
+- Add privacy-preserving analytics and access controls.
+- Add automated benchmark reports for detection timeliness and false positives.
+- Deploy cloud reference architecture on AWS.
