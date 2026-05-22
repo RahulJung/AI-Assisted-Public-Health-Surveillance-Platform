@@ -4,4 +4,4 @@ HL7 ADT messages can provide emergency department arrival and encounter informat
 
 For surveillance use, analysts should validate message control identifiers, facility fields, visit locations, observation names, diagnosis mappings, and missing segment rates.
 
-Synthetic messages in this prototype are illustrative and do not represent real patient data.
+Synthetic messages in this research platform are illustrative and do not represent real patient data.

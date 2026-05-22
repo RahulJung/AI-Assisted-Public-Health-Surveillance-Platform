@@ -40,7 +40,7 @@ def generate_report(db: Session) -> dict:
     markdown = f"""# {title}
 
 ## Executive Summary
-This independent research prototype detected an unusual synthetic surveillance signal for {getattr(anomaly, "syndrome", "selected syndrome")} activity. The signal should be reviewed as decision support only.
+This independent research platform detected an unusual synthetic surveillance signal for {getattr(anomaly, "syndrome", "selected syndrome")} activity. The signal should be reviewed as decision support only.
 
 ## Signal Description
 {display_region_text(getattr(anomaly, "explanation", "No anomaly has been generated yet."))}
@@ -78,7 +78,7 @@ Analysts should compare the synthetic signal with public health surveillance gui
 All records, HL7 messages, indicators, and anomalies are synthetic. Model outputs are illustrative and not validated for operational public health use.
 
 ## Research Disclaimer
-This is an independent research prototype. It does not use real patient data, does not connect to confidential systems, and should not be used for clinical or public health decision-making.
+This is an independent research platform. It does not use real patient data, does not connect to confidential systems, and should not be used for clinical or public health decision-making.
 """
     report = GeneratedReport(title=title, markdown=markdown)
     db.add(report)
