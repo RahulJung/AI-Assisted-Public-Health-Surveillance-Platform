@@ -27,11 +27,20 @@ The answer demonstrated here is not a validated surveillance model. Instead, the
 
 Upload screenshots to `docs/screenshots/` using the filenames below.
 
-### Landing Page
+## Landing Page
+
 
 ![Landing page placeholder](docs/screenshots/landing-page.png)
 
+
+## HL7/EHR Processing
+
+
+![HL7/EHR Processing placeholder](docs/screenshots/hl7processing.png)
+
+
 ### Surveillance Dashboard
+
 
 ![Surveillance dashboard placeholder](docs/screenshots/dashboard1.png)
 
@@ -41,21 +50,48 @@ Upload screenshots to `docs/screenshots/` using the filenames below.
 
 ![Surveillance dashboard placeholder](docs/screenshots/dashboard4.png)
 
+
 ### ML Signal Detection
 
-![ML signal detection placeholder](docs/screenshots/ml-detection.png)
 
-### Forecasting
+![ML signal detection placeholder](docs/screenshots/mldetection1.png)
+
+![ML signal detection placeholder](docs/screenshots/mldetection2.png)
+
+
+## Forecasting
+
 
 ![Forecasting placeholder](docs/screenshots/forecasting.png)
 
-### Knowledge Retrieval
 
-![Knowledge retrieval placeholder](docs/screenshots/knowledge-retrieval.png)
+## Knowledge Retrieval
+
+
+![Knowledge retrieval placeholder](docs/screenshots/knowledgeretrieval1.png)
+
+![Knowledge retrieval placeholder](docs/screenshots/knowledgeretrieval2.png)
+
+![Knowledge retrieval placeholder](docs/screenshots/knowledgeretrieval3.png)
+
+
+## Explainable Insight
+
+
+![Explainable_Insight placeholder](docs/screenshots/insight1.png)
+
+![Explainable_Insight placeholder](docs/screenshots/insight2.png)
+
+![Explainable_Insight placeholder](docs/screenshots/insight3.png)
+
 
 ### Investigation Brief
 
-![Investigation brief placeholder](docs/screenshots/investigation-brief.png)
+
+![Investigation brief placeholder](docs/screenshots/investigationbrief.png)
+
+![Investigation brief placeholder](docs/screenshots/investigationbrief1.png)
+
 
 ## System Overview
 
