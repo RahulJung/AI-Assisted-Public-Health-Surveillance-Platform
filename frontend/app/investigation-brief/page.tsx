@@ -12,7 +12,7 @@ const fallback = {
   markdown: `# Synthetic Public Health Surveillance Investigation Brief
 
 ## Executive Summary
-This independent research prototype detected an unusual synthetic surveillance signal for respiratory activity.
+This independent research platform detected an unusual synthetic surveillance signal for respiratory activity.
 
 ## Signal Description
 Respiratory activity increased above expected baseline in a synthetic region and facility stratum.
@@ -43,7 +43,7 @@ Retrieved local knowledge recommends reviewing reporting delays, data quality, f
 All records are synthetic.
 
 ## Research Disclaimer
-This is an independent research prototype. It does not use real patient data or confidential systems.`
+This is an independent research platform. It does not use real patient data or confidential systems.`
 };
 
 function MarkdownReport({ markdown }: { markdown: string }) {

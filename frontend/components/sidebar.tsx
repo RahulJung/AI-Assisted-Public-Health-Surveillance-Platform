@@ -46,7 +46,7 @@ export function Sidebar() {
         })}
       </nav>
       <div className="absolute bottom-0 border-t border-slate-200 p-4 text-xs leading-5 text-slate-500">
-        Independent research prototype using synthetic data only. Not for operational decision-making.
+        Independent research platform using synthetic data only. Not for operational decision-making.
       </div>
     </aside>
   );

@@ -1,12 +1,12 @@
 # AI-Assisted Public Health Surveillance Platform
 
-Research prototype for syndromic surveillance, anomaly detection, short-horizon forecasting, HL7/EHR message processing, and retrieval-augmented public health interpretation. The system uses synthetic data only and is designed as a decision-support demonstration rather than an operational public health product.
+Research platform for syndromic surveillance, anomaly detection, short-horizon forecasting, HL7/EHR message processing, and retrieval-augmented public health interpretation. The system uses synthetic data only and is designed as a decision-support demonstration rather than an operational public health product.
 
 ## Abstract
 
 Public health surveillance teams often need to distinguish early disease signals from reporting artifacts, facility workflow changes, and noisy small-area variation. This project studies how a full-stack AI/ML system can support that workflow by combining simulated HL7-style encounter data, surveillance feature engineering, anomaly detection, short-term forecasting, retrieval-augmented guidance, and explainable investigation summaries.
 
-The prototype generates 180 days of synthetic emergency department and severity indicators across multiple regions, facilities, syndrome groups, and age groups. It injects outbreak-like patterns, gradual increases, severity lag signals, and reporting-quality artifacts. A FastAPI backend computes model evidence using rolling baselines, EWMA acceleration, Isolation Forest, DBSCAN, and moving-average forecasts. A Next.js dashboard presents surveillance trends, ML signal detection, forecast intervals, knowledge retrieval, explainable insights, and investigation briefs for analyst review.
+The research platform generates 180 days of synthetic emergency department and severity indicators across multiple regions, facilities, syndrome groups, and age groups. It injects outbreak-like patterns, gradual increases, severity lag signals, and reporting-quality artifacts. A FastAPI backend computes model evidence using rolling baselines, EWMA acceleration, Isolation Forest, DBSCAN, and moving-average forecasts. A Next.js dashboard presents surveillance trends, ML signal detection, forecast intervals, knowledge retrieval, explainable insights, and investigation briefs for analyst review.
 
 ## Research Motivation
 
@@ -17,7 +17,7 @@ Traditional syndromic surveillance requires analysts to reason across several im
 - Operational context such as reporting delays, duplicate messages, missing fields, and batch uploads.
 - Stratification by region, facility, syndrome, and age group.
 
-The research question behind this prototype is:
+The research question behind this research platform is:
 
 > Can an integrated AI/ML workflow make synthetic surveillance signals more interpretable by linking anomaly scores, indicator timing, data quality context, and evidence-backed analyst guidance?
 
@@ -211,7 +211,7 @@ The frontend table is organized so analysts can filter by severity, signal type,
 
 ## Performance and Scalability Characteristics
 
-This prototype is optimized for local research iteration and transparent behavior. On the default synthetic dataset, model execution is expected to be interactive on a modern laptop because the data volume is modest and the feature set is tabular.
+This research platform is optimized for local research iteration and transparent behavior. On the default synthetic dataset, model execution is expected to be interactive on a modern laptop because the data volume is modest and the feature set is tabular.
 
 Performance characteristics:
 
@@ -279,7 +279,7 @@ The parser returns structured encounter fields, validation status, missing-field
 
 ## Use Cases
 
-This prototype is useful for:
+This research platform is useful for:
 
 - Demonstrating public health surveillance workflows.
 - Testing anomaly detection logic on reproducible synthetic signals.
@@ -420,7 +420,7 @@ Then restart the backend.
 
 ## Research Disclaimer
 
-This is an independent research prototype. It uses only synthetic data. It does not use real patient data, does not connect to confidential systems, and should not be used for clinical or operational public health decision-making. Model outputs are illustrative and require expert review.
+This is an independent research platform. It uses only synthetic data. It does not use real patient data, does not connect to confidential systems, and should not be used for clinical or operational public health decision-making. Model outputs are illustrative and require expert review.
 
 ## Future Work
 

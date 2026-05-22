@@ -2,12 +2,12 @@
 
 **Version:** 1.0  
 **Date:** May 14, 2026  
-**Project type:** Independent research prototype  
+**Project type:** Independent research platform  
 **Data classification:** Synthetic data only  
 
 ## Executive Summary
 
-The AI-Assisted Public Health Surveillance Platform is a full-stack research prototype for syndromic surveillance, anomaly detection, short-horizon forecasting, HL7/EHR-style message processing, retrieval-augmented public health guidance, explainable insight generation, and investigation brief production. It is designed to demonstrate how modern AI/ML methods can support public health analysts who need to distinguish meaningful early signals from data quality artifacts and routine operational noise.
+The AI-Assisted Public Health Surveillance Platform is a full-stack research platform for syndromic surveillance, anomaly detection, short-horizon forecasting, HL7/EHR-style message processing, retrieval-augmented public health guidance, explainable insight generation, and investigation brief production. It is designed to demonstrate how modern AI/ML methods can support public health analysts who need to distinguish meaningful early signals from data quality artifacts and routine operational noise.
 
 The platform uses a deterministic simulation engine to generate synthetic surveillance data across public health regions, facilities, syndrome categories, age groups, and reporting conditions. The backend transforms those records into engineered surveillance features, applies multiple anomaly detection methods, produces near-term forecasts, indexes a local public health knowledge base, and exposes structured API endpoints. The frontend presents this information in analyst-oriented workflows: a surveillance dashboard, HL7/EHR processing view, ML signal detection table, forecasting page, knowledge retrieval panel, explainable insights page, and investigation brief page.
 
@@ -328,7 +328,7 @@ The forecast output includes:
 - interpretation,
 - and method description.
 
-The frontend supports 7-day and 14-day horizons and displays the forecast interval visually. The method is intentionally simple because the prototype focuses on workflow integration and interpretability. Future versions could compare this baseline with ARIMA, Prophet-style models, LSTM, temporal convolution, or transformer-based approaches.
+The frontend supports 7-day and 14-day horizons and displays the forecast interval visually. The method is intentionally simple because the research platform focuses on workflow integration and interpretability. Future versions could compare this baseline with ARIMA, Prophet-style models, LSTM, temporal convolution, or transformer-based approaches.
 
 ## 11. Retrieval-Augmented Public Health Guidance
 
@@ -385,7 +385,7 @@ The API endpoints support the full research workflow:
 
 ## 14. Performance Characteristics
 
-The prototype is designed for local interactive research. The default dataset is large enough to demonstrate realistic stratification but small enough to run on a laptop.
+The research platform is designed for local interactive research. The default dataset is large enough to demonstrate realistic stratification but small enough to run on a laptop.
 
 Expected performance characteristics:
 
@@ -396,7 +396,7 @@ Expected performance characteristics:
 - Dashboard endpoints return aggregated data rather than raw tables.
 - RAG indexing is local and suitable for a compact knowledge base.
 
-The current implementation has not been benchmarked under production load. It should be treated as a research prototype, not a scale-tested public health platform.
+The current implementation has not been benchmarked under production load. It should be treated as a research platform, not a scale-tested public health platform.
 
 ## 15. Evaluation Strategy
 
@@ -442,7 +442,7 @@ Key limitations include:
 - No streaming ingestion.
 - No formal epidemiologic performance evaluation.
 
-These limitations are acceptable for a research prototype but must be addressed before operational use.
+These limitations are acceptable for a research platform but must be addressed before operational use.
 
 ## 18. Future Work
 
@@ -464,5 +464,5 @@ Recommended future work includes:
 
 The AI-Assisted Public Health Surveillance Platform demonstrates a practical architecture for combining synthetic surveillance data, interpretable anomaly detection, short-term forecasting, retrieval-augmented guidance, and explainable reporting. Its central contribution is not a novel algorithm, but an integrated workflow that makes model evidence, data quality context, and public health interpretation visible to analysts.
 
-The prototype shows how AI/ML systems for public health can be designed around transparency, reproducibility, and human review. It provides a foundation for future validation, improved forecasting, richer NLP, and operational hardening while maintaining a clear boundary: synthetic research decision support, not automated outbreak confirmation.
+The research platform shows how AI/ML systems for public health can be designed around transparency, reproducibility, and human review. It provides a foundation for future validation, improved forecasting, richer NLP, and operational hardening while maintaining a clear boundary: synthetic research decision support, not automated outbreak confirmation.
 

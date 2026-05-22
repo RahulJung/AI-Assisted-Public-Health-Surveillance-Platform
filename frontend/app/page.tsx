@@ -15,7 +15,7 @@ export default function LandingPage() {
     <div className="space-y-8">
       <section className="rounded-lg border border-slate-200 bg-white px-6 py-8 shadow-soft">
         <div className="max-w-4xl">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-primary">Independent research prototype</p>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-primary">Independent research platform</p>
           <h1 className="text-4xl font-semibold tracking-normal text-slate-950">AI/ML Public Health Surveillance Assistant</h1>
           <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-600">
             Research-grade decision support for syndromic surveillance, anomaly detection, and public health knowledge retrieval.
@@ -53,7 +53,7 @@ export default function LandingPage() {
       </section>
 
       <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-900">
-        This application uses synthetic HL7/EHR-style records only. It is an independent research prototype and does not reference employer systems, confidential systems, or real patient data.
+        This application uses synthetic HL7/EHR-style records only. It is an independent research platform and does not reference employer systems, confidential systems, or real patient data.
       </section>
     </div>
   );
