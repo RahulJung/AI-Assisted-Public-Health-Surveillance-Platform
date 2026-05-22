@@ -33,7 +33,13 @@ Upload screenshots to `docs/screenshots/` using the filenames below.
 
 ### Surveillance Dashboard
 
-![Surveillance dashboard placeholder](docs/screenshots/dashboard.png)
+![Surveillance dashboard placeholder](docs/screenshots/dashboard1.png)
+
+![Surveillance dashboard placeholder](docs/screenshots/dashboard2.png)
+
+![Surveillance dashboard placeholder](docs/screenshots/dashboard3.png)
+
+![Surveillance dashboard placeholder](docs/screenshots/dashboard4.png)
 
 ### ML Signal Detection
 
