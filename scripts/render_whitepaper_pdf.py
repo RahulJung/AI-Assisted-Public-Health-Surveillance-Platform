@@ -168,7 +168,6 @@ def markdown_to_story(markdown: str):
     story.append(Spacer(1, 1.45 * inch))
     story.append(Paragraph(clean_inline(title), styles["TitlePage"]))
     story.append(Paragraph("Research whitepaper for a synthetic AI/ML public health surveillance platform", styles["Subtitle"]))
-    story.append(Paragraph("Synthetic data only. Not for clinical or operational public health decision-making.", styles["Subtitle"]))
     story.append(PageBreak())
     index = 1 if lines and lines[0].startswith("# ") else 0
 
